@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-# from pusher import Pusher
 from django.http import JsonResponse
 from decouple import config
 from django.contrib.auth.models import User
 from .models import *
 from rest_framework.decorators import api_view
 import json
+# from pusher import Pusher
 
 # instantiate pusher
 # pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
@@ -22,6 +22,18 @@ def initialize(request):
     players = room.playerNames(player_id)
     return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players}, safe=True)
 
+@api_view(["POST"])
+def registration(request):
+    pass
+
+@api_view(["GET"])
+def login(request):
+    logged_in_user = request.user
+
+    if logged_in_user.is_anonymous:
+        return Player.objects.none
+    else:
+        return Player.objects.filter(user=logged_in_user)
 
 # @csrf_exempt
 @api_view(["POST"])
@@ -59,9 +71,13 @@ def move(request):
         players = room.playerNames(player_id)
         return JsonResponse({'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'error_msg':"You cannot move that way."}, safe=True)
 
+@api_view(["GET"])
+def rooms(request):
+    return JsonResponse({'room':rooms.room, 'description':nextRoom.description, 'players':players, 'error_msg':""}, safe=True)
+
 
 @csrf_exempt
 @api_view(["POST"])
 def say(request):
-    # IMPLEMENT
+    # IMPLEMENT - this requires the pusher?
     return JsonResponse({'error':"Not yet implemented"}, safe=True, status=500)
