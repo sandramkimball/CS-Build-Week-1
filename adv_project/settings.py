@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    't28',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
