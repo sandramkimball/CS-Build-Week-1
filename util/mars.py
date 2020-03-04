@@ -74,6 +74,7 @@ class Mars:
         x: int = 1  # int(size_x / 2)
         y: int = 1  # int(size_y / 2)
         chamber_direction = 'd'
+        descend_level = True
         level_multiplier = 1
         forbidden_directions = 's'
         previous_chamber = None
@@ -82,8 +83,13 @@ class Mars:
             self.grid[y][x] = chamber
             if previous_chamber is not None:
                 previous_chamber.connect_chambers(chamber, chamber_direction)
+                if descend_level:
+                    descend_level = False
+            elif chamber_direction == 'd':
+                x += 1
+                y += 1
             invalid_direction = True
-            while invalid_direction:
+            while invalid_direction and not descend_level:
                 chamber_direction = ['n', 's', 'e', 'w'][random.randint(0, 3)]
                 test_x = 0
                 test_y = 0
@@ -102,6 +108,7 @@ class Mars:
                                 invalid_direction = False
             if (chamber_counter > 0) and (chamber_counter % level) == 0:
                 chamber_direction = 'd'
+                descend_level = True
                 level_multiplier += 1
                 if level_multiplier % 4 == 0:
                     forbidden_directions = 'w'
@@ -150,7 +157,8 @@ for level in chamber_levels:
         chamber_listings[i + multiplier_of_the_level] = [f'Chamber {i + multiplier_of_the_level}: {level}',
                                                          f'You are in a {level} chamber.']
     multiplier_of_the_level += length_of_each_level
-chamber_listings[total_chambers + 1] = ['Martian Lair', 'description']
+chamber_listings[total_chambers + 1] = ['Martian Lair',
+                                        'Deep underground, you have stumbled upon a grisly sight... (to be continued)']
 m = Mars()
 m.build_chambers(level=length_of_each_level, size_x=grid_size, size_y=grid_size, listings=chamber_listings)
 json_list = []
