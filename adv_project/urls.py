@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import include
 from rest_framework.authtoken import views
-
 from rest_framework import routers
-routers = routers.DefaultRouter()
+
+router = routers.DefaultRouter()
+router.register("rooms", RoomViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
