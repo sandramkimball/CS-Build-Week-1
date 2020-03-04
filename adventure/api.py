@@ -18,9 +18,9 @@ def initialize(request):
     player = user.player
     player_id = player.id
     uuid = player.uuid
-    room = player.room()
-    players = room.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players}, safe=True)
+    chamber = player.chamber()
+    players = chamber.playerNames(player_id)
+    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'title':chamber.title, 'description':chamber.description, 'players':players}, safe=True)
 
 
 # @csrf_exempt
@@ -33,31 +33,35 @@ def move(request):
     player_uuid = player.uuid
     data = json.loads(request.body)
     direction = data['direction']
-    room = player.room()
-    nextRoomID = None
+    chamber = player.chamber()
+    nextChamberID = None
     if direction == "n":
-        nextRoomID = room.n_to
+        nextChamberID = chamber.n_to
     elif direction == "s":
-        nextRoomID = room.s_to
+        nextChamberID = chamber.s_to
     elif direction == "e":
-        nextRoomID = room.e_to
+        nextChamberID = chamber.e_to
     elif direction == "w":
-        nextRoomID = room.w_to
-    if nextRoomID is not None and nextRoomID > 0:
-        nextRoom = Room.objects.get(id=nextRoomID)
-        player.currentRoom=nextRoomID
+        nextChamberID = chamber.w_to
+    elif direction == "u":
+        nextChamberID = chamber.u_to
+    elif direction == "d":
+        nextChamberID = chamber.d_to
+    if nextChamberID is not None and nextChamberID > 0:
+        nextChamber = Chamber.objects.get(id=nextChamberID)
+        player.currentChamber=nextChamberID
         player.save()
-        players = nextRoom.playerNames(player_id)
-        currentPlayerUUIDs = room.playerUUIDs(player_id)
-        nextPlayerUUIDs = nextRoom.playerUUIDs(player_id)
+        players = nextChamber.playerNames(player_id)
+        currentPlayerUUIDs = chamber.playerUUIDs(player_id)
+        nextPlayerUUIDs = nextChamber.playerUUIDs(player_id)
         # for p_uuid in currentPlayerUUIDs:
         #     pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} has walked {dirs[direction]}.'})
         # for p_uuid in nextPlayerUUIDs:
         #     pusher.trigger(f'p-channel-{p_uuid}', u'broadcast', {'message':f'{player.user.username} has entered from the {reverse_dirs[direction]}.'})
-        return JsonResponse({'name':player.user.username, 'title':nextRoom.title, 'description':nextRoom.description, 'players':players, 'error_msg':""}, safe=True)
+        return JsonResponse({'name':player.user.username, 'title':nextChamber.title, 'description':nextChamber.description, 'players':players, 'error_msg':""}, safe=True)
     else:
-        players = room.playerNames(player_id)
-        return JsonResponse({'name':player.user.username, 'title':room.title, 'description':room.description, 'players':players, 'error_msg':"You cannot move that way."}, safe=True)
+        players = chamber.playerNames(player_id)
+        return JsonResponse({'name':player.user.username, 'title':chamber.title, 'description':chamber.description, 'players':players, 'error_msg':"You cannot move that way."}, safe=True)
 
 
 @csrf_exempt
