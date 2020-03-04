@@ -172,5 +172,5 @@ for i in range(0, grid_size):
             print('-----', end='')
     print()
 json_list_encoded = json.dumps(json_list, indent=4, sort_keys=True)
-with open('all_chambers.json', 'w') as f:
+with open('../fixtures/all_chambers.json', 'w') as f:
     json.dump(json_list, f)
