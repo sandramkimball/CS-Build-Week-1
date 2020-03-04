@@ -8,9 +8,19 @@ from .models import *
 from .mars import *
 from rest_framework.decorators import api_view
 import json
+from rest_framework import serializers, viewsets
 
 # instantiate pusher
 # pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
+
+class ChamberSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Chamber
+        fields = ('id_num', 'name', 'description', 'n_to', 's_to', 'e_to', 'w_to')
+
+class ChamberViewSet(viewsets.ModelViewSet):
+    serializer_class = ChamberSerializer
+    queryset = Chamber.objects.all()
 
 @csrf_exempt
 @api_view(["GET"])
@@ -28,15 +38,14 @@ def initialize(request):
 def chambers(request):
     user = request.user
     player = request.player
-    allChambers = [{'id':chamber.id_num, 'name':chamber.name, 'description':chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'players': chamber.playerNames(player.id)} for chamber in Chamber.objects.all()}]
+    allChambers = [{'id':chamber.id_num, 'name':chamber.name, 'description':chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'players': chamber.playerNames(player.id)} for chamber in Chamber.objects.all()]
     return JsonResonse(allChambers, safe=False)
 
 @csrf_exempt
 @api_view(['GET'])
 def mars(request):
-    user = request.user
-    player = request.player
-    Mars = [{'width':mars.width, 'mars':mars.height, 'grid':mars.grid, 'description':'The Red Planet'}]
+    
+    Mars = {'width':mars.width, 'mars':mars.height, 'grid':mars.grid, 'description':'The Red Planet'}
     return JsonResonse(Mars, safe=False)
 
 # @csrf_exempt

@@ -6,5 +6,5 @@ urlpatterns = [
     url('move', api.move),
     url('say', api.say),
     url('chambers', api.chambers)
-    url('mars', api.mars)
+    # url('mars', api.mars)
 ]
