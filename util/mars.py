@@ -18,6 +18,14 @@ class Chamber:
     def __repr__(self):
         return f"({self.id})"
 
+    def convert_to_dict(self):
+        """Returns a dictionary representation of this class including metadata such as the module and class names"""
+        #  Populate the dictionary with object meta data
+        obj_dict = {"__class__": self.__class__.__name__, "__module__": self.__module__}
+        #  Populate the dictionary with object properties
+        obj_dict.update(self.__dict__)
+        return obj_dict
+
     def connect_chambers(self, connecting_chamber, direction):
         """Connect two chambers in the given n/s/e/w/u/d direction"""
         reverse_dirs = {"n": "s", "s": "n", "e": "w", "w": "e", "u": "d", "d": "u"}
@@ -130,9 +138,14 @@ for level in chamber_levels:
 chamber_listings[total_chambers + 1] = ['Martian Lair', 'description']
 m = Mars()
 m.build_chambers(level=length_of_each_level, size_x=grid_size, size_y=grid_size, listings=chamber_listings)
+json_list=[]
 for i in range(0, grid_size):
     for j in range(0, grid_size):
         val = m.grid[i][j]
-        print(val, end='') if val is not None else print('--', end='')
+        if val is not None:
+            json_list.append(val.convert_to_dict())
+            print(val, end='')
+        else:
+            print('--', end='')
     print()
 pass
