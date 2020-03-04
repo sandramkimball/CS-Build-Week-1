@@ -5,7 +5,7 @@ from rest_framework.authtoken import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register("rooms", RoomViewSet)
+router.register("chambers", ChamberViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

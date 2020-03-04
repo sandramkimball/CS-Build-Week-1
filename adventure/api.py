@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from decouple import config
 from django.contrib.auth.models import User
 from .models import *
+from .mars import *
 from rest_framework.decorators import api_view
 import json
 
@@ -27,9 +28,16 @@ def initialize(request):
 def chambers(request):
     user = request.user
     player = request.player
-    allChambers = [{'id':chamber.id_num, 'name', chamber.name, 'description', chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'players': chamber.playerNames(player.id)} for chamber in Chamber.objects.all()}]
+    allChambers = [{'id':chamber.id_num, 'name':chamber.name, 'description':chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'players': chamber.playerNames(player.id)} for chamber in Chamber.objects.all()}]
     return JsonResonse(allChambers, safe=False)
 
+@csrf_exempt
+@api_view(['GET'])
+def mars(request):
+    user = request.user
+    player = request.player
+    Mars = [{'width':mars.width, 'mars':mars.height, 'grid':mars.grid, 'description':'The Red Planet'}]
+    return JsonResonse(mars, safe=False)
 
 # @csrf_exempt
 @api_view(["POST"])

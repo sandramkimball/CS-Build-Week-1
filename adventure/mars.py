@@ -116,23 +116,23 @@ class Mars:
             previous_chamber = chamber
 
 
-# total_chambers = 100
-# grid_size = 100
-# length_of_each_level = 25
-# number_of_levels = 4
-# multiplier_of_the_level = 0
-# chamber_listings = {0: ['Martian Surface', 'description']}
-# chamber_levels = ['Dirt', 'Concrete', 'Metal', 'Rock']
-# for level in chamber_levels:
-#     for i in range(1, length_of_each_level + 1):
-#         chamber_listings[i + multiplier_of_the_level] = [f'Chamber {i + multiplier_of_the_level}: {level}', 'description']
-#     multiplier_of_the_level += length_of_each_level
-# chamber_listings[total_chambers + 1] = ['Martian Lair', 'description']
-# m = Mars()
-# m.build_chambers(level=length_of_each_level, size_x=grid_size, size_y=grid_size, listings=chamber_listings)
-# for i in range(0, grid_size):
-#     for j in range(0, grid_size):
-#         val = m.grid[i][j]
-#         print(val, end='') if val is not None else print('--', end='')
-#     print()
-# pass
+    # total_chambers = 100
+    # grid_size = 100
+    # length_of_each_level = 25
+    # number_of_levels = 4
+    # multiplier_of_the_level = 0
+    # chamber_listings = {0: ['Martian Surface', 'description']}
+    # chamber_levels = ['Dirt', 'Concrete', 'Metal', 'Rock']
+    # for level in chamber_levels:
+    #     for i in range(1, length_of_each_level + 1):
+    #         chamber_listings[i + multiplier_of_the_level] = [f'Chamber {i + multiplier_of_the_level}: {level}', 'description']
+    #     multiplier_of_the_level += length_of_each_level
+    # chamber_listings[total_chambers + 1] = ['Martian Lair', 'description']
+    # m = Mars()
+    # m.build_chambers(level=length_of_each_level, size_x=grid_size, size_y=grid_size, listings=chamber_listings)
+    # for i in range(0, grid_size):
+    #     for j in range(0, grid_size):
+    #         val = m.grid[i][j]
+    #     #     print(val, end='') if val is not None else print('--', end='')
+    #     # print()
+    # pass
