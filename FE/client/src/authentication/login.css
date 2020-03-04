@@ -1,0 +1,30 @@
+.title{
+    font-size: 1.5em;
+    text-align: center;
+    color: #f5f5f3;
+    margin-top: 0px;
+    padding-top: 50px;
+    font-family: "Press Start 2P", cursive;
+    padding-bottom: 60px;
+}
+.label{
+    font-size: 1em;
+    text-align: center;
+    color: white;
+    padding-top: 10px;
+    font-family: "Press Start 2P", cursive;
+}
+.bottom{
+    font-size: 1em;
+    text-align: center;
+    color: red;
+    padding-top: 28px;
+    font-family: "Press Start 2P", cursive;
+}
+.signup{
+    font-size: 1em;
+    text-align: center;
+    color: red;
+    padding-top: 5px;
+    font-family: "Press Start 2P", cursive;
+}
