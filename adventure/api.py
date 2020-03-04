@@ -37,7 +37,7 @@ def mars(request):
     user = request.user
     player = request.player
     Mars = [{'width':mars.width, 'mars':mars.height, 'grid':mars.grid, 'description':'The Red Planet'}]
-    return JsonResonse(mars, safe=False)
+    return JsonResonse(Mars, safe=False)
 
 # @csrf_exempt
 @api_view(["POST"])
