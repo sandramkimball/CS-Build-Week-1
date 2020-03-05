@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from decouple import config
 from django.contrib.auth.models import User
 from .models import *
+from .mars import *
 from rest_framework.decorators import api_view
 import json
 from rest_framework import serializers, viewsets
@@ -44,7 +45,7 @@ def chambers(request):
 @api_view(['GET'])
 def mars(request):
     Mars = mars
-    return JsonResonse(Mars, safe=False)
+    return JsonResponse(Mars, safe=False)
 
 # @csrf_exempt
 @api_view(["POST"])
