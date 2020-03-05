@@ -103,3 +103,23 @@ def create_user_player(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_player(sender, instance, **kwargs):
     instance.player.save()
+
+class Alien(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    location = models.IntegerField(default=0, 0) #lat long
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    health = models.IntegerField(blank=True) # 150/200
+    attack = models.IntegerField(blank=True) # randomize.floor(1, 50)
+    
+    def initialize(self):
+        if self.currentRoom == 0:
+            self.currentRoom = Room.objects.first().id
+            self.save()
+
+    def room(self):
+        try:
+            return Room.objects.get(id=self.currentRoom)
+        except Room.DoesNotExist:
+            self.initialize()
+            return self.room()
+
