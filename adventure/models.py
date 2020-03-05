@@ -46,6 +46,11 @@ class Chamber(models.Model):
     def playerUUIDs(self, currentPlayerID):
         return [p.uuid for p in Player.objects.filter(currentChamber=self.id) if p.id != int(currentPlayerID)]
 
+    def chamber_map(self):
+        if request.user == AnonymouseUser():
+            return Response('The Mars Underground, Stranger')
+        else:
+            return Response('The Mars Underground')
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

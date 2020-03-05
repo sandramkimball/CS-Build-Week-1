@@ -9,6 +9,8 @@ from .mars import *
 from rest_framework.decorators import api_view
 import json
 from rest_framework import serializers, viewsets
+from django.conf import settings
+from django.contrib.sessions.middleware import SessionMiddleware
 
 # instantiate pusher
 # pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
@@ -16,11 +18,19 @@ from rest_framework import serializers, viewsets
 class ChamberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Chamber
-        fields = ('id_num', 'name', 'description', 'n_to', 's_to', 'e_to', 'w_to')
+        fields = ('id', 'title', 'description', 'n_to', 's_to', 'e_to', 'w_to', 'u_to', 'd_to')
 
 class ChamberViewSet(viewsets.ModelViewSet):
-    serializer_class = ChamberSerializer
     queryset = Chamber.objects.all()
+    serializer_class = ChamberSerializer
+
+class NewSessionMiddleware(SessionMiddleware):
+    def process_response(self, request, response):
+        response = super(NewSessionMiddleware, self).process_response(request, response)
+        #You have access to request.user in this method
+        if not request.user.is_authenticated():
+            del response.cookies[settings.SESSION_COOKIE_NAME]
+        return response
 
 @csrf_exempt
 @api_view(["GET"])
@@ -31,20 +41,19 @@ def initialize(request):
     uuid = player.uuid
     chamber = player.chamber()
     players = chamber.playerNames(player_id)
-    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'chamber':chamber.name, 'description':chamber.description, 'players':players}, safe=True)
+    return JsonResponse({'uuid': uuid, 'name':player.user.username, 'chamber':chamber.title, 'description':chamber.description, 'players':players}, safe=True)
 
 @csrf_exempt
 @api_view(['GET'])
 def chambers(request):
     user = request.user
-    player = request.player
-    allChambers = [{'id':chamber.id_num, 'name':chamber.name, 'description':chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'players': chamber.playerNames(player.id)} for chamber in Chamber.objects.all()]
+    player = user.player
+    allChambers = [{'id':chamber.id, 'title':chamber.title, 'description':chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'u_to':chamber.u_to, 'd_to':chamber.d_to, 'players': chamber.playerNames(player.id)} for chamber in Chamber.objects.all()]
     return JsonResonse(allChambers, safe=False)
 
 @csrf_exempt
 @api_view(['GET'])
 def mars(request):
-    
     Mars = {'width':mars.width, 'mars':mars.height, 'grid':mars.grid, 'description':'The Red Planet'}
     return JsonResonse(Mars, safe=False)
 
