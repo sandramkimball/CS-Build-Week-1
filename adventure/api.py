@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from decouple import config
 from django.contrib.auth.models import User
 from .models import *
-from .mars import *
 from rest_framework.decorators import api_view
 import json
 from rest_framework import serializers, viewsets
@@ -35,13 +34,16 @@ def initialize(request):
 @csrf_exempt
 @api_view(['GET'])
 def chambers(request):
-    allChambers = [{'id':chamber.id, 'title':chamber.title, 'description':chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'u_to':chamber.u_to, 'd_to':chamber.d_to, 'players': chamber.playerNames(player.id)} for chamber in Chamber.objects.all()]
-    return JsonResponse('Welcome to Mars', safe=False, status=200)
+    allChambers = []
+    for chamber in Chamber.objects.all():
+        allChambers.append({'id':chamber.id, 'title':chamber.title, 'description':chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'u_to':chamber.u_to, 'd_to':chamber.d_to}) 
+
+    return JsonResponse(allChambers, safe=False, status=200)
 
 @csrf_exempt
 @api_view(['GET'])
 def mars(request):
-    Mars = {'width':mars.width, 'mars':mars.height, 'grid':mars.grid, 'description':'The Red Planet'}
+    Mars = mars
     return JsonResonse(Mars, safe=False)
 
 # @csrf_exempt
@@ -85,3 +87,9 @@ def move(request):
 def say(request):
     # IMPLEMENT
     return JsonResponse({'error':"Not yet implemented"}, safe=True, status=500)
+
+# @api_view(['GET'])
+# def generate_map(request):
+#     generate = Generator()
+#     generate.create_map()
+#     return JsonResponse({'created'}, safe=False, status=201)
