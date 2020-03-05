@@ -94,26 +94,23 @@ class Mars(models.Model):
 
 
 @receiver(post_save, sender=User)
-def creat_mars_map(sender, instance, created, **kwargs):
-    if created:
-        Player.objects.create(user=instance)
-        Token.objects.create(user=instance)
-
-    total_chambers = 100
-    grid_size = 100
-    length_of_each_level = 25
-    number_of_levels = 4
-    multiplier_of_the_level = 0
-    chamber_listings = {
-        0: ['Martian Surface', 'The ruddy rocky dusty terrain behind you. The entrance ahead of you, leading downwards.']}
-    chamber_levels = ['Dirt', 'Concrete', 'Metal', 'Rock']
-    for level in chamber_levels:
-        for i in range(1, length_of_each_level + 1):
-            chamber_listings[i + multiplier_of_the_level] = [f'Chamber {i + multiplier_of_the_level}: {level}',
-                                                            f'You are in a {level} chamber.']
-        multiplier_of_the_level += length_of_each_level
-    chamber_listings[total_chambers + 1] = ['Martian Lair', 'description']
-    m = Mars()
-    m.build_chambers(level=length_of_each_level, size_x=grid_size, size_y=grid_size, listings=chamber_listings)
-    json_list = []
+def create_mars_map(sender, instance, created, **kwargs):
+    if Player:
+        total_chambers = 100
+        grid_size = 100
+        length_of_each_level = 25
+        number_of_levels = 4
+        multiplier_of_the_level = 0
+        chamber_listings = {
+            0: ['Martian Surface', 'The ruddy rocky dusty terrain behind you. The entrance ahead of you, leading downwards.']}
+        chamber_levels = ['Dirt', 'Concrete', 'Metal', 'Rock']
+        for level in chamber_levels:
+            for i in range(1, length_of_each_level + 1):
+                chamber_listings[i + multiplier_of_the_level] = [f'Chamber {i + multiplier_of_the_level}: {level}',
+                                                                f'You are in a {level} chamber.']
+            multiplier_of_the_level += length_of_each_level
+        chamber_listings[total_chambers + 1] = ['Martian Lair', 'description']
+        m = Mars()
+        m.build_chambers(level=length_of_each_level, size_x=grid_size, size_y=grid_size, listings=chamber_listings)
+        json_list = []
 

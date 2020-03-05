@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-# from pusher import Pusher
 from django.http import JsonResponse
 from decouple import config
 from django.contrib.auth.models import User
@@ -10,10 +9,7 @@ from rest_framework.decorators import api_view
 import json
 from rest_framework import serializers, viewsets
 from django.conf import settings
-from django.contrib.sessions.middleware import SessionMiddleware
 
-# instantiate pusher
-# pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
 
 class ChamberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -24,13 +20,6 @@ class ChamberViewSet(viewsets.ModelViewSet):
     queryset = Chamber.objects.all()
     serializer_class = ChamberSerializer
 
-class NewSessionMiddleware(SessionMiddleware):
-    def process_response(self, request, response):
-        response = super(NewSessionMiddleware, self).process_response(request, response)
-        #You have access to request.user in this method
-        if not request.user.is_authenticated():
-            del response.cookies[settings.SESSION_COOKIE_NAME]
-        return response
 
 @csrf_exempt
 @api_view(["GET"])
@@ -46,10 +35,8 @@ def initialize(request):
 @csrf_exempt
 @api_view(['GET'])
 def chambers(request):
-    user = request.user
-    player = user.player
     allChambers = [{'id':chamber.id, 'title':chamber.title, 'description':chamber.description, 'n_to': chamber.n_to, 's_to': chamber.s_to, 'e_to': chamber.e_to, 'w_to': chamber.w_to, 'u_to':chamber.u_to, 'd_to':chamber.d_to, 'players': chamber.playerNames(player.id)} for chamber in Chamber.objects.all()]
-    return JsonResonse(allChambers, safe=False)
+    return JsonResponse('Welcome to Mars', safe=False, status=200)
 
 @csrf_exempt
 @api_view(['GET'])

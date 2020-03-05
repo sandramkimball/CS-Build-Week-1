@@ -2,55 +2,6 @@ import random
 import json
 
 
-# class Chamber3:
-#     def __init__(self, id_num, name, description, x, y):
-#         self.id = id_num
-#         self.name = name
-#         self.description = description
-#         self.n_to = None
-#         self.s_to = None
-#         self.e_to = None
-#         self.w_to = None
-#         self.u_to = None
-#         self.d_to = None
-#         self.x = x
-#         self.y = y
-
-#     def __repr__(self):
-#         return f"({self.id:003})"
-
-#     def convert_to_dict(self):
-#         """Returns a dictionary representation of this class including metadata such as the module and class names"""
-#         #  Populate the dictionary with object meta data
-#         obj_dict = {"__class__": self.__class__.__name__, "__module__": self.__module__}
-#         #  Populate the dictionary with object properties
-#         obj_dict.update(self.__dict__)
-#         if self.n_to is not None:
-#             obj_dict['n_to'] = self.n_to.id
-#         if self.s_to is not None:
-#             obj_dict['s_to'] = self.s_to.id
-#         if self.e_to is not None:
-#             obj_dict['e_to'] = self.e_to.id
-#         if self.w_to is not None:
-#             obj_dict['w_to'] = self.w_to.id
-#         if self.u_to is not None:
-#             obj_dict['u_to'] = self.u_to.id
-#         if self.d_to is not None:
-#             obj_dict['d_to'] = self.d_to.id
-#         return obj_dict
-
-#     def connect_chambers(self, connecting_chamber, direction):
-#         """Connect two chambers in the given n/s/e/w/u/d direction"""
-#         reverse_dirs = {"n": "s", "s": "n", "e": "w", "w": "e", "u": "d", "d": "u"}
-#         reverse_dir = reverse_dirs[direction]
-#         setattr(self, f"{direction}_to", connecting_chamber)
-#         setattr(connecting_chamber, f"{reverse_dir}_to", self)
-
-#     def get_chamber_in_direction(self, direction):
-#         """Get the connecting chamber in the given n/s/e/w/u/d direction"""
-#         return getattr(self, f"{direction}_to")
-
-
 class Mars:
     def __init__(self):
         self.width = 0
